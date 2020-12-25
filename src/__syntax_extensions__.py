@@ -16,8 +16,11 @@ class ExtensionInfo(NamedTuple):
 def __getattr__(name):
     try:
         m = __import__('syntax_extensions.extensions.' + name)
-    except ImportError:
-        raise AttributeError
+    except ImportError as e:
+        if e.name == 'syntax_extensions.extensions.' + name:
+            raise AttributeError
+        else:
+            raise 
     else:
         return ExtensionInfo(
             name,
