@@ -7,13 +7,25 @@ from typing import Union, Optional, Callable
 
 from syntax_extensions.base.apply import apply
 
+def _get_line(text, n):
+    lines = text.splitlines(True)
+    if not 0<n<=len(lines):
+        return ''
+    else:
+        return lines[n-1].replace('\r\n', '\n')
 
 class ExtendedSourceFileLoader(SourceFileLoader):
     def source_to_code(self, data: Union[bytes, str], path: str = ...) -> types.CodeType:
         if isinstance(data, bytes):
             data = data.decode('utf-8')
         code = apply(data)
-        return super().source_to_code(code, path)
+        try:
+            return super().source_to_code(code, path)
+        except SyntaxError as e:
+            if _get_line(data, e.lineno) == e.text:
+                e.text = _get_line(code, e.lineno)
+            raise
+    
 
 
 class ExtendedSourceFileLoaderNoCache(ExtendedSourceFileLoader):

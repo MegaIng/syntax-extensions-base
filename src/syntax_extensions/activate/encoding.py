@@ -8,7 +8,7 @@ from syntax_extensions.base.apply import apply
 def decode(inp: bytes, errors='strict') -> Tuple[str, int]:
     try:
         s, con = utf_8.decode(inp, errors)
-        s = apply(s)
+        s = apply(s) + "\n"
         return s, con
     except Exception as e:
         sys.excepthook(*sys.exc_info())

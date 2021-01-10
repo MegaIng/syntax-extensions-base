@@ -22,6 +22,7 @@ def __getattr__(name):
         else:
             raise 
     else:
+        m = getattr(m.extensions, name)
         return ExtensionInfo(
             name,
             getattr(m, '__package__', None),

@@ -49,7 +49,7 @@ setup(
     packages=find_namespace_packages(where='src'),  # Required
 
     python_requires='>=3.7, <4',  # TODO: to be decided
-    install_requires=[],
+    install_requires=['lark'],
     extras_require={
     },
 
